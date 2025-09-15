@@ -27,6 +27,7 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
+          <string>comunica</string>
           <string>com.comunica.google</string>
         </array>
       </dict>

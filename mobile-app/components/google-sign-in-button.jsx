@@ -1,27 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Platform, View } from "react-native";
-import {
-  GoogleSignin,
-  statusCodes,
-  GoogleSigninButton,
-} from "@react-native-google-signin/google-signin";
-import {
-  getAuth,
-  signInWithCredential,
-  GoogleAuthProvider,
-} from "@react-native-firebase/auth";
-import { configureGoogleSignIn } from "@/services/_googleAuth";
-import { useAuth } from "@/hooks/_useAuth";
-import { api } from "@/services/_api";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, View, Pressable, Image, Text } from "react-native";
+import { configureGoogleSignIn, signInWithGoogle } from "@/services";
+import { useAuth } from "@/hooks";
 
 export const GoogleSignInButton = ({
   onSuccess,
   onError,
-  style,
-  size = GoogleSigninButton.Size.Wide,
-  color = GoogleSigninButton.Color.Dark,
-  width = 192,
-  height = 48,
   showSpinnerOverlay = false,
 }) => {
   const { user, initializing } = useAuth();
@@ -31,71 +15,14 @@ export const GoogleSignInButton = ({
     configureGoogleSignIn();
   }, []);
 
-  const handleGoogleSignIn = async () => {
+  const handleGoogleSignin = async () => {
     if (loading) return;
     setLoading(true);
-    try {
-      if (Platform.OS === "android") {
-        await GoogleSignin.hasPlayServices({
-          showPlayServicesUpdateDialog: true,
-        });
-      }
-      await GoogleSignin.hasPlayServices();
-      const response = await GoogleSignin.signIn();
+    const res = await signInWithGoogle();
+    setLoading(false);
 
-      if (isSuccessResponse(response)) {
-        // Token do google
-        let idToken = response.data?.idToken;
-        if (!idToken) {
-          const tokens = await GoogleSignin.getTokens();
-          idToken = tokens?.idToken ?? null;
-        }
-        if (!idToken) {
-          throw new Error("Sem idToken.");
-        }
-
-        const gooogleCredential = GoogleAuthProvider.credential(idToken);
-        signInWithCredential(getAuth(), gooogleCredential);
-        /*
-      const firebaseIdToken = await user.getIdToken(true);
-      await api.post(
-        "/login",
-        {
-          id: user.uid,
-          name:
-            user.displayName || (user.email ? user.email.split("@")[0] : ""),
-          email: user.email,
-          emailVerified: !!user.emailVerified,
-          image: user.photoURL,
-        },
-        {
-          headers: { Authorization: `Bearer ${firebaseIdToken}` },
-        }
-      );
-      */
-        onSuccess?.();
-      } else {
-        return;
-      }
-    } catch (error) {
-      if (error) {
-        switch (error.code) {
-          case statusCodes.IN_PROGRESS:
-            console.log("Sign-in já em andamento");
-            break;
-          case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
-            console.log("Play Services indisponível/desatualizado");
-            break;
-          default:
-            console.log("Erro Google Sign-In:", error);
-        }
-      } else {
-        console.log("Erro geral no signIn:", error?.message || error);
-      }
-      onError?.(error);
-    } finally {
-      setLoading(false);
-    }
+    if (res.ok) onSuccess && onSuccess();
+    else onError && onError({ code: res.code, message: res.message });
   };
 
   if (initializing) {
@@ -109,14 +36,23 @@ export const GoogleSignInButton = ({
   if (user) return null;
 
   return (
-    <View style={style}>
-      <GoogleSigninButton
-        style={{ width, height }}
-        size={size}
-        color={color}
-        onPress={handleGoogleSignIn}
+    <View>
+      <Pressable
+        className={`flex-row items-center rounded-full border px-12 py-3 ${
+          loading ? "bg-gray-200 border-gray-300" : "bg-white border-gray-300"
+        }`}
+        onPress={handleGoogleSignin}
         disabled={loading}
-      />
+      >
+        <Image
+          source={require("@/assets/google-logo.png")}
+          className="w-5 h-5 mr-2"
+          resizeMode="contain"
+        />
+        <Text className="text-base text-[#3c4043] font-normal">
+          Entrar com o Google
+        </Text>
+      </Pressable>
     </View>
   );
 };

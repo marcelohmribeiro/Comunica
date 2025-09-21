@@ -1,19 +1,16 @@
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { TouchableOpacity, Text } from "react-native";
-import {
-  getAuth,
-  signOut as firebaseSignOut,
-} from "@react-native-firebase/auth";
+import { signOut, getAuth } from "@react-native-firebase/auth";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 export const SignOutButton = () => {
   const [loading, setLoading] = useState(false);
 
-  const signOut = useCallback(async () => {
+  const HandleSignOut = useCallback(async () => {
     if (loading) return;
     setLoading(true);
     try {
-      await firebaseSignOut(getAuth());
+      await signOut(getAuth());
       await GoogleSignin.signOut();
     } catch (e) {
       console.error("Erro no signOut:", e);
@@ -24,7 +21,7 @@ export const SignOutButton = () => {
 
   return (
     <TouchableOpacity
-      onPress={signOut}
+      onPress={HandleSignOut}
       className="bg-red-600 p-3 rounded-lg w-40 items-center"
     >
       <Text className="text-white font-semibold">
@@ -32,4 +29,4 @@ export const SignOutButton = () => {
       </Text>
     </TouchableOpacity>
   );
-}
+};

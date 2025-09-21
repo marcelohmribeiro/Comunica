@@ -1,9 +1,8 @@
-import { Text, TextInput, TouchableOpacity } from "react-native";
-import { Container } from "@/components/page-container";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function Denuncia() {
   return (
-    <Container>
+    <View className="flex-1 bg-gray-100 items-center justify-center p-6">
       <Text className="text-xl font-bold mb-6">📝 Fazer Denúncia</Text>
 
       <TextInput
@@ -20,6 +19,6 @@ export default function Denuncia() {
       <TouchableOpacity className="bg-blue-600 p-4 rounded-lg w-full items-center">
         <Text className="text-white font-semibold">Enviar Denúncia</Text>
       </TouchableOpacity>
-    </Container>
+    </View>
   );
 }

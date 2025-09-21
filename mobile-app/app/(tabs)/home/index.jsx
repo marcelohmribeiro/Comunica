@@ -21,7 +21,7 @@ export default function Home() {
 
   if (users) {
     return (
-      <Container>
+      <View className="flex-1 bg-gray-100 items-center justify-center p-6">
         <Text className="text-xl font-bold mb-4">📍 Denúncias Recentes</Text>
         <View className="flex items-center justify-center">
           <FlatList
@@ -37,13 +37,13 @@ export default function Home() {
             )}
           />
         </View>
-      </Container>
+      </View>
     );
   }
 
   return (
-    <Container>
+    <View className="flex-1 bg-gray-100 items-center justify-center p-6">
       <Text>Olá</Text>
-    </Container>
+    </View>
   );
 }

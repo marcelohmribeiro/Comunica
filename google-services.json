@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "978165368354",
+    "project_id": "comunica-28348",
+    "storage_bucket": "comunica-28348.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:978165368354:android:1d33d7fc0c178a993d2c7b",
+        "android_client_info": {
+          "package_name": "com.comunica.google"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "978165368354-j3vf98uu79ck8jp0bgj3mu8at6ehem3e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBd_lItVCoyOafJRdptwXKYhJghl7Wcpek"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "978165368354-a40nr8q0v7sbe6ab17hfqjqaf722o448.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "978165368354-ba4ubd2fpu3bokeoicbag4gum17tkuit.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.comunica.google"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

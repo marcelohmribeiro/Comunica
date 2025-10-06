@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import {
   View,
   Text,
@@ -6,20 +6,23 @@ import {
   Dimensions,
   TouchableOpacity,
   ActivityIndicator,
+  RefreshControl,
 } from "react-native";
 import { useRouter } from "expo-router";
-import ReportCard from "@/components/report-card";
-import ReportMap from "@/components/report-map";
-import ReportDetail from "@/components/report-detail";
+import { ReportCard } from "@/components/_report-card";
+import { ReportMap } from "@/components/_report-map";
+import { ReportDetail } from "@/components/_report-detail";
 import { getUserReports } from "@/services/_reports";
 const { width } = Dimensions.get("window");
 
-export default function Home() {
+const Home = () => {
   const router = useRouter();
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [selected, setSelected] = useState(null);
   const [openDetail, setOpenDetail] = useState(false);
+  const [coordinate, setCoordinate] = useState({});
 
   useEffect(() => {
     (async () => {
@@ -31,68 +34,91 @@ export default function Home() {
 
   const recent = useMemo(() => reports.slice(0, 5), [reports]);
 
-  const handleOpen = (r) => {
-    setSelected(r);
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      const list = await getUserReports();
+      setReports(list);
+    } catch (e) {
+      console.error("refresh home:", e);
+    } finally {
+      setRefreshing(false);
+    }
+  }, []);
+
+  const handleOpen = (rep) => {
+    setSelected(rep);
     setOpenDetail(true);
+  };
+
+  const handleSeeMap = (r) => {
+    if (!r?.location) return;
+    setCoordinate({
+      latitude: r.location.latitude,
+      longitude: r.location.longitude,
+      latitudeDelta: 0.1,
+      longitudeDelta: 0.1,
+    });
+    setOpenDetail(false);
   };
 
   return (
     <View className="flex-1 bg-gray-50">
-      <View className="bg-[#1976D2] pt-12 pb-6 px-4">
-        <Text className="text-2xl font-bold text-white">Comunica</Text>
-        <Text className="text-white/90 mt-1">
-          Ajude a melhorar sua comunidade
-        </Text>
-      </View>
-
-      <View className="mt-4 px-4">
-        <View className="flex-row justify-between items-center mb-3">
-          <Text className="text-lg font-bold text-gray-800">
-            Denúncias Recentes
-          </Text>
-          <TouchableOpacity onPress={() => router.push("ReportsList")}>
-            <Text className="text-[#1976D2] text-sm">Ver todas</Text>
-          </TouchableOpacity>
-        </View>
-
-        {loading ? (
-          <View className="h-48 items-center justify-center">
-            <ActivityIndicator size="small" color="#1976D2" />
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        contentContainerStyle={{ paddingBottom: 16 }}
+      >
+        <View className="mt-4 px-4">
+          <View className="flex-row justify-between items-center mb-3">
+            <Text className="text-lg font-bold text-gray-800">
+              Denúncias Recentes
+            </Text>
+            <TouchableOpacity onPress={() => router.push("home/reports")}>
+              <Text className="text-[#1976D2] text-sm">Ver todas</Text>
+            </TouchableOpacity>
           </View>
-        ) : (
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            className="max-h-48"
-          >
-            <View className="flex-row gap-4 pr-4">
-              {recent.map((r) => (
-                <ReportCard
-                  key={r.id}
-                  report={r}
-                  width={width * 0.8}
-                  onPress={() => handleOpen(r)}
-                />
-              ))}
+
+          {loading ? (
+            <View className="h-48 items-center justify-center">
+              <ActivityIndicator size="small" color="#1976D2" />
             </View>
-          </ScrollView>
-        )}
-      </View>
+          ) : (
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              className="max-h-48"
+            >
+              <View className="flex-row gap-4 pr-4">
+                {recent.map((r) => (
+                  <ReportCard
+                    key={r.id}
+                    report={r}
+                    width={width * 0.8}
+                    onPress={() => handleOpen(r)}
+                  />
+                ))}
+              </View>
+            </ScrollView>
+          )}
+        </View>
+        <View className="flex-1 mt-4 px-4" style={{ height: 320 }}>
+          <ReportMap reports={reports} focusCoord={coordinate} />
+        </View>
+      </ScrollView>
       {openDetail && (
         <ReportDetail
           open={openDetail}
           onClose={() => setOpenDetail(false)}
           report={selected}
-          onSeeMap={(rep) => {
-            setOpenDetail(false);
-            // opcional: centrar mapa no ponto da denúncia
-            // mapRef?.animateToRegion({ ...rep.location, latitudeDelta: 0.01, longitudeDelta: 0.01 });
+          onSeeMap={(r) => {
+            handleSeeMap(r);
           }}
         />
       )}
-      <View className="flex-1 mt-4 px-4">
-        <ReportMap reports={reports} />
-      </View>
     </View>
   );
-}
+};
+
+export default Home;

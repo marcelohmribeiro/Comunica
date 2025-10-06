@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { SafeAreaView, ScrollView, View, Image, Pressable } from "react-native";
+import { ScrollView, View, Image, Pressable } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Mail, Lock, User, ArrowLeft } from "lucide-react-native";
 import { useRouter } from "expo-router";
 import { signUpEmail } from "@/services";

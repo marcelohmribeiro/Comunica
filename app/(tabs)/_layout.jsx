@@ -1,6 +1,6 @@
 import { Tabs, Redirect } from "expo-router";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useAuth } from "@/hooks/_useAuth";
+import useAuth from "@/hooks/_useAuth";
 
 export default function TabLayout() {
   const { user, initializing } = useAuth();
@@ -25,7 +25,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="report/index"
+        name="new-report/index"
         options={{
           title: "Denunciar",
           tabBarIcon: ({ color }) => (
@@ -40,6 +40,12 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => (
             <MaterialIcons size={28} name="person" color={color} />
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="home/reports"
+        options={{
+          href: null,
         }}
       />
     </Tabs>

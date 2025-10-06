@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { SafeAreaView, ScrollView, View, Image } from "react-native";
+import { ScrollView, View, Image, Text } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Mail, Lock } from "lucide-react-native";
-import { GoogleSignInButton } from "@/components/google-sign-in-button";
+import { GoogleSignInButton } from "@/components/_google-sign-in-button";
 import { useRouter } from "expo-router";
 import { signInEmail } from "@/services";
 import Toast from "react-native-toast-message";
 // Gluestack
 import {
-  Text as GSText,
   Button,
   ButtonText,
   FormControl,
@@ -17,7 +17,7 @@ import {
   InputField,
   Divider,
 } from "@/components/ui";
-import { useLoading } from "@/helpers/_loading";
+import { useLoading } from "@/store/helpers/_loading";
 
 export default function SignIn() {
   const router = useRouter();
@@ -124,21 +124,17 @@ export default function SignIn() {
           </Button>
 
           <View className="items-center mt-3">
-            <GSText
-              size="sm"
-              underline
-              className="color-blue-600"
+            <Text
+              className="color-blue-600 underline text-sm"
               onPress={() => router.push("/(auth)/login/signup")}
             >
               Não possui uma conta?
-            </GSText>
+            </Text>
           </View>
 
           <View className="flex-row items-center my-5">
             <Divider className="flex-1 bg-neutral-200 h-[1px]" />
-            <GSText size="xs" color="$textLight600" className="mx-3">
-              ou
-            </GSText>
+            <Text className="mx-3 text-xs">ou</Text>
             <Divider className="flex-1 bg-neutral-200 h-[1px]" />
           </View>
 

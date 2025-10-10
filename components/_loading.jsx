@@ -1,9 +1,9 @@
 import { Image as MotiImage } from "moti";
-import React from "react";
+import { useState, useEffect, memo } from "react";
 import { Text, View } from "react-native";
-import { useLoading } from "@/helpers/_loading";
+import { useLoading } from "@/store";
 
-const AnimatedLogo = React.memo(() => (
+const AnimatedLogo = memo(() => (
   <MotiImage
     from={{ opacity: 0.5 }}
     animate={{ opacity: 1 }}
@@ -13,16 +13,19 @@ const AnimatedLogo = React.memo(() => (
   />
 ));
 
-const Loading = React.memo(() => {
-  const loading = useLoading((s) => s.loading);
-  const [dots, setDots] = React.useState("");
-  React.useEffect(() => {
+export const LoadingDots = memo(({ className }) => {
+  const [dots, setDots] = useState("");
+  useEffect(() => {
     const interval = setInterval(() => {
       setDots((prev) => (prev.length < 3 ? prev + "." : ""));
     }, 500);
     return () => clearInterval(interval);
   }, []);
+  return <Text className={className}>Carregando dados{dots}</Text>;
+});
 
+const Loading = memo(() => {
+  const loading = useLoading((s) => s.loading);
   if (loading === 0) return null;
   return (
     <View
@@ -34,7 +37,7 @@ const Loading = React.memo(() => {
         style={{ backgroundColor: "rgba(0,0,0,0.2)" }}
       >
         <AnimatedLogo />
-        <Text className="text-white">Carregando dados{dots}</Text>
+        <LoadingDots className="text-white" />
       </View>
     </View>
   );
@@ -50,4 +53,3 @@ const LoadingProvider = (props) => {
 };
 
 export { LoadingProvider };
-export default LoadingProvider;

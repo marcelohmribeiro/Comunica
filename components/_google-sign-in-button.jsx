@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { View, Pressable, Image, Text } from "react-native";
 import { configureGoogleSignIn, signInWithGoogle } from "@/services";
 
-export const GoogleSignInButton = ({ onSuccess, onError }) => {
+const GoogleSignInButton = ({ onSuccess }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -10,14 +10,17 @@ export const GoogleSignInButton = ({ onSuccess, onError }) => {
   }, []);
 
   const handleGoogleSignin = async () => {
-    if (loading) return;
-    setLoading(true);
-    const res = await signInWithGoogle();
-    setLoading(false);
-    if (res.ok) {
-      onSuccess();
-    } else {
-      onError({ code: res.code, message: res.message });
+    try {
+      if (loading) return;
+      setLoading(true);
+      const res = await signInWithGoogle();
+      setLoading(false);
+      if (res.ok) {
+        onSuccess();
+      }
+    } catch (error) {
+      console.error("cancelou");
+      throw error;
     }
   };
   return (
@@ -41,3 +44,5 @@ export const GoogleSignInButton = ({ onSuccess, onError }) => {
     </View>
   );
 };
+
+export { GoogleSignInButton };

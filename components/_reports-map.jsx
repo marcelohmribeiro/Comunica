@@ -9,7 +9,9 @@ const ReportMap = memo(({ reports = [], focusCoord }) => {
   const [markers, setMarkers] = useState(reports);
 
   useEffect(() => {
-    setMarkers(reports);
+    if (reports.length > markers.length) {
+      setMarkers(reports);
+    }
   }, [reports]);
 
   useEffect(() => {
@@ -36,7 +38,8 @@ const ReportMap = memo(({ reports = [], focusCoord }) => {
               latitude: r.location.coordinate.latitude,
               longitude: r.location.coordinate.longitude,
             }}
-            title={getCategoryLabel(r.category)}
+            title={`${r.location.address.street} - ${r.location.address.district}`}
+            description={getCategoryLabel(r.category)}
             pinColor={STATUS_COLOR[r.status]}
           />
         ))}

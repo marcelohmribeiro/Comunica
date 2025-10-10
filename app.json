@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Comunica",
-    "slug": "Comunica",
+    "slug": "comunica",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -31,18 +31,6 @@
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
     },
-    "plugins": [
-      "expo-router",
-      "@react-native-firebase/app",
-      "@react-native-google-signin/google-signin",
-      [
-        "expo-build-properties",
-        {
-          "ios": {
-            "useFrameworks": "static"
-          }
-        }
-      ]
-    ]
+    "plugins": ["expo-router", "expo-web-browser", "expo-dev-client"]
   }
 }

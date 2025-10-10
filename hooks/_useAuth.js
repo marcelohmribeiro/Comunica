@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { onAuthStateChanged } from "@react-native-firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/lib/_firebase";
 
 const useAuth = () => {
@@ -17,4 +17,4 @@ const useAuth = () => {
   return { user, initializing };
 };
 
-export { useAuth };
+export default useAuth;

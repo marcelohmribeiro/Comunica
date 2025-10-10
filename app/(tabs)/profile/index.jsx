@@ -54,6 +54,8 @@ const Profile = () => {
   const [phone, setPhone] = useState(user?.phoneNumber || "");
   const [theme, setTheme] = useState("system");
 
+  // user have => "phoneNumber": undefined, "photoURL": undefined,
+
   const isVerified = !!user?.emailVerified;
 
   const initials = useMemo(() => {

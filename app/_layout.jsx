@@ -1,10 +1,10 @@
+import "@/styles/global.css";
 import { Slot } from "expo-router";
 import { KeyboardAvoidingView, Platform } from "react-native";
-import { LoadingProvider } from "@/components/_loading";
-import Toast from "react-native-toast-message";
-import "@/styles/global.css";
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
+import { LoadingProvider } from "@/components/_loading";
 import { View, Image } from "react-native";
+import Toast from "react-native-toast-message";
 import useAuth from "@/hooks/_useAuth";
 
 const Header = () => {

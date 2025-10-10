@@ -9,15 +9,13 @@ import {
   RefreshControl,
 } from "react-native";
 import { useRouter } from "expo-router";
-import { ReportCard } from "@/components/_report-card";
-import { ReportMap } from "@/components/_report-map";
-import { ReportDetail } from "@/components/_report-detail";
-import { getUserReports } from "@/services/_reports";
+import { ReportCard, ReportMap, ReportDetail } from "@/components";
+import { useReports } from "@/store";
 const { width } = Dimensions.get("window");
 
 const Home = () => {
   const router = useRouter();
-  const [reports, setReports] = useState([]);
+  const { items, fetch } = useReports();
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [selected, setSelected] = useState(null);
@@ -25,26 +23,20 @@ const Home = () => {
   const [coordinate, setCoordinate] = useState({});
 
   useEffect(() => {
-    (async () => {
-      const list = await getUserReports();
-      setReports(list);
-      setLoading(false);
-    })();
-  }, []);
-
-  const recent = useMemo(() => reports.slice(0, 5), [reports]);
+    fetch({ limit: 5, reset: true });
+    setLoading(false);
+  }, [fetch]);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     try {
-      const list = await getUserReports();
-      setReports(list);
-    } catch (e) {
-      console.error("refresh home:", e);
+      await fetch({ limit: 5, reset: true });
     } finally {
       setRefreshing(false);
     }
-  }, []);
+  }, [fetch]);
+
+  const recent = useMemo(() => items.slice(0, 5), [items]);
 
   const handleOpen = (rep) => {
     setSelected(rep);
@@ -54,8 +46,8 @@ const Home = () => {
   const handleSeeMap = (r) => {
     if (!r?.location) return;
     setCoordinate({
-      latitude: r.location.latitude,
-      longitude: r.location.longitude,
+      latitude: r.location.coordinate.latitude,
+      longitude: r.location.coordinate.longitude,
       latitudeDelta: 0.1,
       longitudeDelta: 0.1,
     });
@@ -90,12 +82,13 @@ const Home = () => {
               showsHorizontalScrollIndicator={false}
               className="max-h-48"
             >
-              <View className="flex-row gap-4 pr-4">
+              <View className="flex-row gap-4">
                 {recent.map((r) => (
                   <ReportCard
                     key={r.id}
                     report={r}
                     width={width * 0.8}
+                    status={true}
                     onPress={() => handleOpen(r)}
                   />
                 ))}
@@ -104,7 +97,7 @@ const Home = () => {
           )}
         </View>
         <View className="flex-1 mt-4 px-4" style={{ height: 320 }}>
-          <ReportMap reports={reports} focusCoord={coordinate} />
+          <ReportMap reports={recent} focusCoord={coordinate} />
         </View>
       </ScrollView>
       {openDetail && (

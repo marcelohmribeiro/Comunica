@@ -5,7 +5,7 @@ import {
   sendEmailVerification,
   createUserWithEmailAndPassword,
   updateProfile,
-} from "@react-native-firebase/auth";
+} from "firebase/auth";
 
 export const signUpEmail = async (email, password, name) => {
   try {
@@ -18,6 +18,7 @@ export const signUpEmail = async (email, password, name) => {
     return cred.user;
   } catch (error) {
     console.error(error);
+    throw error;
   }
 };
 
@@ -27,6 +28,7 @@ export const signInEmail = async (email, password) => {
     return cred.user;
   } catch (error) {
     console.error(error);
+    throw error;
   }
 };
 
@@ -35,6 +37,7 @@ export const signOutApp = async () => {
     return await signOut(auth);
   } catch (error) {
     console.error(error);
+    throw error;
   }
 };
 
@@ -44,5 +47,6 @@ export const sendVerificationEmail = async () => {
     await sendEmailVerification(auth.currentUser);
   } catch (error) {
     console.error("Erro ao enviar verificação:", error);
+    throw error;
   }
 };

@@ -1,4 +1,4 @@
-import { auth, db, storage } from "@/lib/_firebase";
+import { auth, db } from "@/lib/_firebase";
 import {
   collection,
   doc,
@@ -6,54 +6,41 @@ import {
   serverTimestamp,
   query,
   where,
+  getDocs,
   getDocsFromServer,
-} from "@react-native-firebase/firestore";
+  orderBy,
+  startAfter,
+  limit as fsLimit,
+} from "firebase/firestore";
+import { uploadToCloudinary } from "./_upload-cloudinary";
 
-async function uploadReportImage({ userId, reportId, imageUri }) {
-  try {
-    if (!imageUri) return null;
-
-    const ext = imageUri.split(".").pop()?.split("?")[0] || "jpg";
-    const path = `reports/${userId}/${reportId}.${ext}`;
-    const ref = storage.ref(path);
-
-    await ref.putFile(imageUri);
-    return await ref.getDownloadURL();
-  } catch (error) {
-    console.error("Erro ao fazer upload da imagem:", error);
-  }
-}
-
-export async function createReport({
-  title,
-  description,
+export const createReport = async ({
   category,
   imageUri,
-  location = null,
-}) {
+  location,
+  description,
+}) => {
   try {
     const user = auth.currentUser;
     if (!user?.uid) throw new Error("Usuário não autenticado");
-
+    if (!category && !imageUri && !location && !description) {
+      throw new Error("Os campos são obrigatórios.");
+      return;
+    }
     const reportsCol = collection(db, "reports");
     const reportRef = doc(reportsCol);
     const reportId = reportRef.id;
 
-    const imageUrl = await uploadReportImage({
-      userId: user.uid,
-      reportId,
-      imageUri,
-    });
+    const { secure_url: url } = await uploadToCloudinary(imageUri);
 
     const data = {
       id: reportId,
-      title: title,
       description: description,
       category: category,
-      imageUrl: imageUrl || null,
+      imageUrl: url,
       userId: user.uid,
       status: "aberta",
-      location: location || null,
+      location: location,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     };
@@ -63,23 +50,37 @@ export async function createReport({
   } catch (error) {
     console.error("Erro ao criar denúncia:", error);
   }
-}
+};
 
-export async function getUserReports() {
+export const getUserReports = async ({ limit, cursor = null }) => {
   try {
     const user = auth.currentUser;
     if (!user.uid) return [];
 
     const reportsCol = collection(db, "reports");
+    let q = query(
+      reportsCol,
+      where("userId", "==", user.uid),
+      orderBy("createdAt", "desc")
+    );
 
-    // só filtra pelo userId
-    const q = query(reportsCol, where("userId", "==", user.uid));
+    if (cursor) q = query(q, startAfter(cursor));
+    if (limit) q = query(q, fsLimit(limit));
 
-    const snap = await getDocsFromServer(q);
-    return snap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    let snap;
+    try {
+      snap = await getDocsFromServer(q);
+    } catch (e) {
+      snap = await getDocs(q);
+    }
+
+    const items = snap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    const nextCursor = snap.docs.length
+      ? snap.docs[snap.docs.length - 1]
+      : null;
+    return { items, nextCursor };
   } catch (error) {
     console.error("Erro ao buscar denúncias pelo userId:", error);
-    return [];
-  } finally {
+    throw error;
   }
-}
+};

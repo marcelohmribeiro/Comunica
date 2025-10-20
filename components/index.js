@@ -5,4 +5,7 @@ export * from "@/components/_reports-card";
 export * from "@/components/_reports-detail";
 export * from "@/components/_reports-map";
 export * from "@/components/_reports-status";
+export * from "@/components/_reports-graphic";
+export * from "@/components/_profile-edit";
+export * from "@/components/_google-sign-in-button";
 export * from "@/components/_sign-out-button";

@@ -12,7 +12,7 @@ import {
 import { STATUS_COLOR, STATUS_LABEL } from "@/constants";
 import { getCategoryLabel } from "@/utils/_category";
 
-const ReportDetail = memo(
+export const ReportDetail = memo(
   ({ open = false, onClose = () => {}, report = null, onSeeMap }) => {
     if (!report) return null;
 
@@ -30,7 +30,7 @@ const ReportDetail = memo(
             ) : null}
 
             <View className="flex-row items-center justify-between mb-3">
-              <Text className="text-indigo-600 font-semibold text-sm uppercase tracking-wide">
+              <Text className="text-gray-800 font-bold text-sm uppercase tracking-wide">
                 {getCategoryLabel(report.category)}
               </Text>
 
@@ -93,5 +93,3 @@ const ReportDetail = memo(
     );
   }
 );
-
-export { ReportDetail };

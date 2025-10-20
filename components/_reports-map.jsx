@@ -1,18 +1,16 @@
-import React, { memo, useEffect, useRef, useState } from "react";
+import React, { memo, useMemo, useEffect, useRef } from "react";
 import { View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { getCategoryLabel } from "@/utils/_category";
 import { STATUS_COLOR, DEFAULT_REGION } from "@/constants";
 
-const ReportMap = memo(({ reports = [], focusCoord }) => {
+export const ReportMap = memo(({ reports = [], focusCoord }) => {
   const mapRef = useRef(null);
-  const [markers, setMarkers] = useState(reports);
 
-  useEffect(() => {
-    if (reports.length > markers.length) {
-      setMarkers(reports);
-    }
-  }, [reports]);
+  const markersId = useMemo(
+    () => reports.map((r) => r.id).join("|"),
+    [reports]
+  );
 
   useEffect(() => {
     if (focusCoord?.latitude && focusCoord?.longitude && mapRef.current) {
@@ -30,16 +28,21 @@ const ReportMap = memo(({ reports = [], focusCoord }) => {
 
   return (
     <View className="flex-1 bg-white rounded-xl shadow overflow-hidden">
-      <MapView ref={mapRef} style={{ flex: 1 }} initialRegion={DEFAULT_REGION}>
-        {markers.map((r) => (
+      <MapView
+        ref={mapRef}
+        style={{ flex: 1 }}
+        initialRegion={DEFAULT_REGION}
+        key={markersId}
+      >
+        {reports.map((r) => (
           <Marker
             key={r.id}
             coordinate={{
               latitude: r.location.coordinate.latitude,
               longitude: r.location.coordinate.longitude,
             }}
-            title={`${r.location.address.street} - ${r.location.address.district}`}
-            description={getCategoryLabel(r.category)}
+            title={getCategoryLabel(r.category)}
+            description={`${r.location.address.street} - ${r.location.address.district}`}
             pinColor={STATUS_COLOR[r.status]}
           />
         ))}
@@ -47,5 +50,3 @@ const ReportMap = memo(({ reports = [], focusCoord }) => {
     </View>
   );
 });
-
-export { ReportMap };

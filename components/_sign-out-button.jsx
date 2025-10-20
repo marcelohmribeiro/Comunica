@@ -1,25 +1,24 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { Text, View, ActivityIndicator } from "react-native";
 import { LogOut } from "lucide-react-native";
-import { signOutGoogle, signOutApp } from "@/services";
+import { signOutApp } from "@/services";
 import { useReports } from "@/store";
 import { Button } from "@/components/ui";
+import { useLoading } from "@/store";
 
 export const SignOutButton = () => {
-  const [loading, setLoading] = useState(false);
+  const { startLoading, stopLoading, loading } = useLoading();
   const { reset } = useReports();
 
   const HandleSignOut = useCallback(async () => {
-    if (loading) return;
-    setLoading(true);
+    startLoading();
     try {
-      await signOutGoogle();
       await signOutApp();
       reset();
     } catch (e) {
       console.error("Erro no signOut:", e);
     } finally {
-      setLoading(false);
+      stopLoading();
     }
   }, [loading]);
 
@@ -28,11 +27,11 @@ export const SignOutButton = () => {
       variant="solid"
       size="lg"
       className="bg-red-600 w-full rounded-xl"
-      isDisabled={loading}
+      isDisabled={loading > 0}
       onPress={HandleSignOut}
       accessibilityLabel="Sair da conta"
     >
-      {loading ? (
+      {loading > 0 ? (
         <View className="flex-row items-center justify-center gap-2">
           <ActivityIndicator size="small" color="#fff" />
           <Text className="text-white font-semibold">Saindo...</Text>

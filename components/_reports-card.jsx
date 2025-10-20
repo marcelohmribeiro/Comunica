@@ -4,7 +4,7 @@ import { MapPin } from "lucide-react-native";
 import { STATUS_COLOR, STATUS_LABEL } from "@/constants";
 import { getCategoryLabel } from "@/utils/_category";
 
-const ReportCard = memo(
+export const ReportCard = memo(
   ({ report = {}, width = 320, onPress, status = false }) => {
     return (
       <TouchableOpacity
@@ -55,5 +55,3 @@ const ReportCard = memo(
     );
   }
 );
-
-export { ReportCard };

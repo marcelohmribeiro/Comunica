@@ -13,7 +13,7 @@ const AnimatedLogo = memo(() => (
   />
 ));
 
-export const LoadingDots = memo(({ className }) => {
+export const LoadingDots = memo(({ className, text }) => {
   const [dots, setDots] = useState("");
   useEffect(() => {
     const interval = setInterval(() => {
@@ -21,7 +21,12 @@ export const LoadingDots = memo(({ className }) => {
     }, 500);
     return () => clearInterval(interval);
   }, []);
-  return <Text className={className}>Carregando dados{dots}</Text>;
+  return (
+    <Text className={className}>
+      {text ? text : "Carregando dados"}
+      {dots}
+    </Text>
+  );
 });
 
 const Loading = memo(() => {
@@ -43,7 +48,7 @@ const Loading = memo(() => {
   );
 });
 
-const LoadingProvider = (props) => {
+export const LoadingProvider = (props) => {
   return (
     <View className="w-full h-full">
       <Loading />
@@ -51,5 +56,3 @@ const LoadingProvider = (props) => {
     </View>
   );
 };
-
-export { LoadingProvider };

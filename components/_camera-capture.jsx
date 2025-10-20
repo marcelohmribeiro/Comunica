@@ -5,7 +5,7 @@ import * as Location from "expo-location";
 import { Camera, MapPin, X } from "lucide-react-native";
 import { useLoading } from "@/store";
 
-const CameraCapture = ({ value, onChange }) => {
+export const CameraCapture = ({ value, onChange }) => {
   const cameraRef = useRef(null);
   const [permission, requestPermission] = useCameraPermissions();
   const [usingCamera, setUsingCamera] = useState(false);
@@ -185,5 +185,3 @@ const CameraCapture = ({ value, onChange }) => {
     </View>
   );
 };
-
-export { CameraCapture };

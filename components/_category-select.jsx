@@ -11,7 +11,7 @@ import {
   SelectItem,
 } from "@/components/ui";
 
-const CategorySelect = ({ value, onChange, label = "Categoria" }) => {
+export const CategorySelect = ({ value, onChange, label = "Categoria" }) => {
   return (
     <View className="mb-6">
       <Text className="text-lg font-bold text-gray-800 mb-3">{label}</Text>
@@ -32,5 +32,3 @@ const CategorySelect = ({ value, onChange, label = "Categoria" }) => {
     </View>
   );
 };
-
-export { CategorySelect };

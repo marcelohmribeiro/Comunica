@@ -11,6 +11,7 @@ import {
 import { useRouter } from "expo-router";
 import { ReportCard, ReportMap, ReportDetail } from "@/components";
 import { useReports } from "@/store";
+import { ReportGraphic } from "@/components";
 const { width } = Dimensions.get("window");
 
 const Home = () => {
@@ -55,7 +56,7 @@ const Home = () => {
   };
 
   return (
-    <View className="flex-1 bg-gray-50">
+    <View className="flex-1 bg-gray-50 dark:bg-gray-950">
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -97,7 +98,10 @@ const Home = () => {
           )}
         </View>
         <View className="flex-1 mt-4 px-4" style={{ height: 320 }}>
-          <ReportMap reports={recent} focusCoord={coordinate} />
+          <ReportMap reports={[...recent]} focusCoord={coordinate} />
+        </View>
+        <View className="mt-4 px-4">
+          <ReportGraphic />
         </View>
       </ScrollView>
       {openDetail && (

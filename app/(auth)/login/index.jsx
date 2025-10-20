@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { ScrollView, View, Image, Text } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { Mail, Lock } from "lucide-react-native";
-import { GoogleSignInButton } from "@/components/_google-sign-in-button";
+import { GoogleSignInButton } from "@/components";
 import { useRouter } from "expo-router";
 import { signInEmail } from "@/services";
 import Toast from "react-native-toast-message";
@@ -49,7 +48,7 @@ export default function SignIn() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <View className="flex-1 bg-white">
       <ScrollView contentContainerStyle={{ paddingBottom: 24 }}>
         <View className="bg-white px-10 pt-8 pb-6">
           <Image
@@ -145,6 +144,6 @@ export default function SignIn() {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { ScrollView, View, Image, Pressable } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { Mail, Lock, User, ArrowLeft } from "lucide-react-native";
 import { useRouter } from "expo-router";
 import { signUpEmail } from "@/services";
@@ -52,7 +51,7 @@ export default function SignUp() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <View className="flex-1 bg-white">
       <View className="px-4 pt-6">
         <Pressable onPress={() => router.back()} hitSlop={8}>
           <ArrowLeft size={28} color="#111827" />
@@ -176,6 +175,6 @@ export default function SignUp() {
           </Button>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }

@@ -1,10 +1,4 @@
-import React, {
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  useCallback,
-} from "react";
+import { useMemo, useRef, useState, useCallback } from "react";
 import { View, Text, FlatList, RefreshControl } from "react-native";
 import { Divider } from "@/components/ui";
 import {
@@ -23,18 +17,9 @@ const Reports = () => {
   const [openDetail, setOpenDetail] = useState(false);
   const [selected, setSelected] = useState(null);
   const [isPaging, setIsPaging] = useState(false);
-
   const [categoryFilter, setCategoryFilter] = useState(null);
 
-  const didInitRef = useRef(false);
   const pagingRef = useRef(false);
-
-  // primeira carga
-  useEffect(() => {
-    if (didInitRef.current) return;
-    didInitRef.current = true;
-    fetch({ limit: 10, reset: true });
-  }, [fetch]);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -45,7 +30,7 @@ const Reports = () => {
     }
   }, [fetch]);
 
-  // infinite scroll
+  // paginação
   const onEndReached = useCallback(async () => {
     if (pagingRef.current) return;
     if (!hasMore) return;
@@ -139,7 +124,7 @@ const Reports = () => {
         ListEmptyComponent={
           <View className="items-center justify-center py-16">
             <Text className="text-sm text-gray-500">
-              Nenhum report encontrado.
+              Nenhuma denúncia encontrada.
             </Text>
           </View>
         }

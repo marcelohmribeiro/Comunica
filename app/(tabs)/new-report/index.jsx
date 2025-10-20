@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useMemo } from "react";
+import { useCallback, useState, useMemo } from "react";
 import { View, Text, ScrollView, TextInput } from "react-native";
 import { Send } from "lucide-react-native";
 import { Button, ButtonText } from "@/components/ui";

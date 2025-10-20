@@ -1,4 +1,4 @@
-import { auth, db } from "@/lib/_firebase";
+import { auth, db } from "./_firebase";
 import {
   collection,
   doc,
@@ -25,7 +25,6 @@ export const createReport = async ({
     if (!user?.uid) throw new Error("Usuário não autenticado");
     if (!category && !imageUri && !location && !description) {
       throw new Error("Os campos são obrigatórios.");
-      return;
     }
     const reportsCol = collection(db, "reports");
     const reportRef = doc(reportsCol);

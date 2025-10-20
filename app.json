@@ -15,8 +15,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.comunica.google",
-      "googleServicesFile": "./GoogleService-info.plist"
+      "bundleIdentifier": "com.comunica.app"
     },
     "android": {
       "adaptiveIcon": {
@@ -24,13 +23,15 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.comunica.google",
-      "googleServicesFile": "./google-services.json"
+      "package": "com.comunica.app"
     },
     "web": {
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
     },
-    "plugins": ["expo-router", "expo-web-browser", "expo-dev-client"]
+    "plugins": [
+      "expo-router",
+      "expo-web-browser"
+    ]
   }
 }

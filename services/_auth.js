@@ -1,4 +1,4 @@
-import { auth } from "@/lib/_firebase";
+import { auth } from "./_firebase";
 import {
   signInWithEmailAndPassword,
   signOut,

@@ -18,8 +18,13 @@ import useAuth from "@/hooks/_useAuth";
 
 export const ProfileEdit = ({ isOpen, onClose, handleSave }) => {
   const { user } = useAuth();
-  const [displayName, setDisplayName] = useState(user?.displayName || "");
-  const [phone, setPhone] = useState(user?.phoneNumber || "");
+  const [displayName, setDisplayName] = useState(user?.displayName);
+  const [phone, setPhone] = useState(user?.phoneNumber);
+
+  const onSave = () => {
+    handleSave({ displayName, phoneNumber: phone });
+  };
+
   return (
     <View>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -62,7 +67,7 @@ export const ProfileEdit = ({ isOpen, onClose, handleSave }) => {
             <Button variant="outline" onPress={onClose}>
               <Text className="font-semibold text-gray-800">Cancelar</Text>
             </Button>
-            <Button variant="solid" onPress={handleSave}>
+            <Button variant="solid" onPress={onSave}>
               <Text className="text-white font-semibold">Salvar</Text>
             </Button>
           </ModalFooter>

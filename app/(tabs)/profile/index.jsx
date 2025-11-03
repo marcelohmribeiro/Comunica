@@ -15,7 +15,7 @@ import {
   LogOut,
 } from "lucide-react-native";
 import useAuth from "@/hooks/_useAuth";
-import { sendVerificationEmail } from "@/services/_auth";
+import { sendVerificationEmail, updateUserProfile } from "@/services/_auth";
 import { SignOutButton, ProfileEdit } from "@/components";
 import { Button, Divider } from "@/components/ui";
 import Toast from "react-native-toast-message";
@@ -50,11 +50,26 @@ const Profile = () => {
     }
   };
 
-  const handleSaveProfile = async () => {
-    // TODO: integre com seu updateProfile do Firebase (displayName/phone)
-    // ex: await updateProfile(auth.currentUser, { displayName });
-    setEditOpen(false);
-    Alert.alert("Pronto!", "Seu perfil foi atualizado.");
+  const handleSaveProfile = async (profileData) => {
+    try {
+      await updateUserProfile({
+        displayName: profileData.displayName,
+        phoneNumber: profileData.phoneNumber,
+      });
+      setEditOpen(false);
+      Toast.show({
+        type: "success",
+        text1: "Perfil atualizado",
+        text2: "Suas informações foram salvas com sucesso.",
+      });
+    } catch (error) {
+      console.error("Erro ao atualizar perfil:", error);
+      Toast.show({
+        type: "error",
+        text1: "Erro ao atualizar",
+        text2: "Não foi possível salvar as alterações.",
+      });
+    }
   };
 
   if (initializing) {

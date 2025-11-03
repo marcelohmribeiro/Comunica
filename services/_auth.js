@@ -50,3 +50,14 @@ export const sendVerificationEmail = async () => {
     throw error;
   }
 };
+
+export const updateUserProfile = async (profileData) => {
+  try {
+    if (!auth.currentUser) throw new Error("Sem usuário autenticado.");
+    await updateProfile(auth.currentUser, profileData);
+    return auth.currentUser;
+  } catch (error) {
+    console.error("Erro ao atualizar perfil:", error);
+    throw error;
+  }
+};

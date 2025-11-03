@@ -24,16 +24,9 @@ export const DEFAULT_REGION = {
 };
 
 export const CATEGORIES = [
-  { value: "buraco_rua", label: "Buraco na Rua" },
+  { value: "vias_publicas", label: "Vias Públicas" },
   { value: "iluminacao_publica", label: "Iluminação Pública" },
-  { value: "lixo_acumulado", label: "Lixo Acumulado" },
-  { value: "rede_agua", label: "Rede de Água" },
-  { value: "poste_danificado", label: "Poste Danificado" },
-  { value: "arvore_caida", label: "Árvore Caída" },
-  { value: "calcada_danificada", label: "Calçada Danificada" },
-  { value: "barulho", label: "Barulho" },
-  { value: "vizinhança", label: "Vizinhança" },
-  { value: "limpeza", label: "Limpeza" },
-  { value: "segurança", label: "Segurança" },
+  { value: "limpeza_urbana", label: "Limpeza Urbana" },
+  { value: "saneamento", label: "Saneamento" },
   { value: "outros", label: "Outro" },
 ];

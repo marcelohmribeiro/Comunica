@@ -1,5 +1,7 @@
 export * from "@/components/_camera-capture";
 export * from "@/components/_category-select";
+export * from "@/components/_status-select";
+export * from "@/components/_status-select";
 export * from "@/components/_loading";
 export * from "@/components/_reports-card";
 export * from "@/components/_reports-detail";

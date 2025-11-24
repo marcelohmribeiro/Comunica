@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  Image,
-  ScrollView,
-  ActivityIndicator,
-  Alert,
-} from "react-native";
+import { View, Text, Image, ScrollView, ActivityIndicator } from "react-native";
 import {
   Mail,
   CheckCircle2,
@@ -25,8 +18,6 @@ const Profile = () => {
 
   const [sendingEmail, setSendingEmail] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
-
-  // user have => "phoneNumber": undefined, "photoURL": undefined,
 
   const isVerified = !!user?.emailVerified;
 

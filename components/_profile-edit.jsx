@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text } from "react-native";
 import {
   Button,
@@ -18,8 +18,15 @@ import useAuth from "@/hooks/_useAuth";
 
 export const ProfileEdit = ({ isOpen, onClose, handleSave }) => {
   const { user } = useAuth();
-  const [displayName, setDisplayName] = useState(user?.displayName);
-  const [phone, setPhone] = useState(user?.phoneNumber);
+  const [displayName, setDisplayName] = useState(user?.displayName || "");
+  const [phone, setPhone] = useState(user?.phoneNumber || "");
+
+  useEffect(() => {
+    if (isOpen && user) {
+      setDisplayName(user.displayName || "");
+      setPhone(user.phoneNumber || "");
+    }
+  }, [isOpen, user]);
 
   const onSave = () => {
     handleSave({ displayName, phoneNumber: phone });

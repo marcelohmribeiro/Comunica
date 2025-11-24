@@ -8,7 +8,8 @@ import {
   LoadingDots,
 } from "@/components";
 import { useReports } from "@/store";
-import { CategorySelect } from "@/components/_category-select";
+import { CategorySelect } from "@/components";
+import { StatusSelect } from "@/components";
 
 const Reports = () => {
   const { items, fetch, hasMore } = useReports();
@@ -18,6 +19,7 @@ const Reports = () => {
   const [selected, setSelected] = useState(null);
   const [isPaging, setIsPaging] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState(null);
+  const [statusFilter, setStatusFilter] = useState(null);
 
   const pagingRef = useRef(false);
 
@@ -45,10 +47,14 @@ const Reports = () => {
   }, [fetch, hasMore]);
 
   const filteredItems = useMemo(() => {
-    return items.filter((it) =>
-      categoryFilter ? it.category === categoryFilter : true
-    );
-  }, [items, categoryFilter]);
+    return items.filter((it) => {
+      const matchCategory = categoryFilter
+        ? it.category === categoryFilter
+        : true;
+      const matchStatus = statusFilter ? it.status === statusFilter : true;
+      return matchCategory && matchStatus;
+    });
+  }, [items, categoryFilter, statusFilter]);
 
   const count = useMemo(() => items.length, [items]);
 
@@ -82,30 +88,41 @@ const Reports = () => {
 
   return (
     <View className="flex-1 bg-gray-50">
-      <View className="bg-white border-b border-gray-200 px-4 pt-4 pb-3">
-        <View className="flex-row justify-between items-center mb-3">
-          <Text className="text-lg font-bold text-gray-800">
-            Todos os reports
+      <View className="mx-4 mt-4 p-4 rounded-2xl bg-white border border-gray-200">
+        <View className="flex-row justify-between items-center mb-4">
+          <Text className="text-lg font-bold text-gray-900">
+            Todas as Denúncias
           </Text>
-          <Text className="text-xs text-gray-500 mt-0.5">
-            {count} resultados
-          </Text>
+          <Text className="text-xs text-gray-500">{count} resultados</Text>
         </View>
 
-        <View className="mt-3">
-          <CategorySelect
-            value={categoryFilter}
-            onChange={(val) => setCategoryFilter(val)}
-            label="Filtrar por categoria"
-          />
+        <View className="flex-row gap-4">
+          <View className="flex-1">
+            <CategorySelect
+              value={categoryFilter}
+              onChange={setCategoryFilter}
+              label="Categoria"
+            />
+          </View>
+
+          <View className="flex-1">
+            <StatusSelect
+              value={statusFilter}
+              onChange={setStatusFilter}
+              label="Status"
+            />
+          </View>
         </View>
 
-        {categoryFilter && (
+        {(categoryFilter || statusFilter) && (
           <Text
-            onPress={() => setCategoryFilter(null)}
-            className="text-xs text-blue-600 font-semibold mt-1"
+            onPress={() => {
+              setCategoryFilter(null);
+              setStatusFilter(null);
+            }}
+            className="text-xs text-blue-600 font-semibold mt-3 self-end"
           >
-            Limpar filtro
+            Limpar filtros
           </Text>
         )}
       </View>

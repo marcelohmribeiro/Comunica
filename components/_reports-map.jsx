@@ -1,10 +1,10 @@
 import React, { memo, useMemo, useEffect, useRef } from "react";
-import { View } from "react-native";
-import MapView, { Marker } from "react-native-maps";
-import { getCategoryLabel } from "@/utils/_category";
+import { View, Text } from "react-native";
+import MapView, { Marker, Callout } from "react-native-maps";
+import { getCategoryLabel } from "@/utils";
 import { STATUS_COLOR, DEFAULT_REGION } from "@/constants";
 
-export const ReportMap = memo(({ reports = [], focusCoord }) => {
+export const ReportMap = memo(({ reports = [], focusCoord, open }) => {
   const mapRef = useRef(null);
 
   const markersId = useMemo(
@@ -44,7 +44,18 @@ export const ReportMap = memo(({ reports = [], focusCoord }) => {
             title={getCategoryLabel(r.category)}
             description={`${r.location.address.street} - ${r.location.address.district}`}
             pinColor={STATUS_COLOR[r.status]}
-          />
+          >
+            <Callout onPress={() => open?.(r)}>
+              <Text className="font-bold">{getCategoryLabel(r.category)}</Text>
+              <Text>
+                {`${r.location.address.street} - ${r.location.address.district}`}
+              </Text>
+
+              <Text className="text-[#1976D2] text-sm mt-2 underline">
+                Detalhes
+              </Text>
+            </Callout>
+          </Marker>
         ))}
       </MapView>
     </View>

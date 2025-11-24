@@ -52,7 +52,7 @@ export default function SignUp() {
 
   return (
     <View className="flex-1 bg-white">
-      <View className="px-4 pt-6">
+      <View className="px-4 pt-16">
         <Pressable onPress={() => router.back()} hitSlop={8}>
           <ArrowLeft size={28} color="#111827" />
         </Pressable>

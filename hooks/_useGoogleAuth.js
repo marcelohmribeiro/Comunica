@@ -35,16 +35,6 @@ export default function useGoogleAuth({
     return makeRedirectUri({ scheme, useProxy });
   }, [scheme, useProxy, expoUsername, expoSlug]);
 
-  useEffect(() => {
-    console.log("Google Auth:", {
-      platform: Platform.OS,
-      redirectUri,
-      useProxy,
-      hasExpoClientId: !!webClientId,
-      hasIosClientId: !!iosClientId,
-    });
-  }, [redirectUri, useProxy, webClientId, iosClientId]);
-
   const [request, response, promptAsync] = Google.useAuthRequest(
     {
       responseType: ResponseType.IdToken,
@@ -58,17 +48,30 @@ export default function useGoogleAuth({
   );
 
   const signin = useCallback(async () => {
-    const res = await promptAsync();
-    if (res?.type === "success") {
-      const idToken = res.params?.id_token || res.authentication?.idToken;
-      if (!idToken) throw new Error("Token de ID não recebido do Google.");
-      return await signInWithGoogle(idToken);
+    try {
+      const res = await promptAsync();
+      if (res?.type === "success") {
+        const idToken = res.params?.id_token || res.authentication?.idToken;
+        if (!idToken) {
+          console.log("Token de ID não recebido do Google.");
+          return { ok: false };
+        }
+        return await signInWithGoogle(idToken);
+      }
+      if (res?.type === "dismiss") {
+        console.log("Login cancelado pelo usuário.");
+        return { ok: false };
+      }
+      if (res?.type === "error") {
+        console.log("Erro no login com Google:", res.error?.message);
+        return { ok: false };
+      }
+      console.log("Falha no login com Google.");
+      return { ok: false };
+    } catch (error) {
+      console.log("Erro capturado:", error.message);
+      return { ok: false };
     }
-    if (res?.type === "dismiss")
-      throw new Error("Login cancelado pelo usuário.");
-    if (res?.type === "error")
-      throw new Error(res.error?.message || "Erro no login com Google.");
-    throw new Error("Falha no login com Google.");
   }, [promptAsync]);
 
   const logout = useCallback(async () => {

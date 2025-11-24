@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { View, Text } from "react-native";
 import { Progress, ProgressFilledTrack } from "@/components/ui";
-import { getCategoryLabel } from "@/utils/_category";
+import { getCategoryLabel } from "@/utils";
 import { STATUS_LABEL, STATUS_COLOR, STATUS_PROGRESS } from "@/constants";
 
 export const ReportStatus = memo(

@@ -10,7 +10,7 @@ import {
   ButtonText,
 } from "@/components/ui";
 import { STATUS_COLOR, STATUS_LABEL } from "@/constants";
-import { getCategoryLabel } from "@/utils/_category";
+import { getCategoryLabel } from "@/utils";
 
 export const ReportDetail = memo(
   ({ open = false, onClose = () => {}, report = null, onSeeMap }) => {

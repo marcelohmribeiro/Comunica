@@ -98,7 +98,11 @@ const Home = () => {
           )}
         </View>
         <View className="flex-1 mt-4 px-4" style={{ height: 320 }}>
-          <ReportMap reports={[...recent]} focusCoord={coordinate} />
+          <ReportMap
+            reports={[...recent]}
+            focusCoord={coordinate}
+            open={handleOpen}
+          />
         </View>
         <View className="mt-4 px-4">
           <ReportGraphic />

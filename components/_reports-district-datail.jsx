@@ -10,7 +10,7 @@ import {
   ButtonText,
 } from "@/components/ui";
 import { ReportStatus } from "./_reports-status";
-import { getCategoryLabel } from "@/utils/_category";
+import { getCategoryLabel } from "@/utils";
 
 export const ReportsDistrictDetail = memo(
   ({ open = false, onClose = () => {}, district = null, reports = [] }) => {
@@ -91,7 +91,7 @@ export const ReportsDistrictDetail = memo(
                       className="text-base font-semibold text-slate-800"
                       numberOfLines={2}
                     >
-                      {getCategoryLabel(topProblem.label)} ({topProblem.value})
+                      {getCategoryLabel(topProblem.label)}
                     </Text>
                   ) : (
                     <Text className="text-slate-400">—</Text>

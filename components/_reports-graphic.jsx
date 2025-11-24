@@ -75,9 +75,10 @@ export const ReportGraphic = () => {
       </View>
 
       {data.map((item, i) => (
-        <View
+        <TouchableOpacity
           key={item.label}
           className={"flex-row items-center px-4 py-3 bg-white"}
+          onPress={() => setSelectedDistrict(item)}
         >
           <View className="flex-row items-center flex-1">
             <View
@@ -101,7 +102,7 @@ export const ReportGraphic = () => {
               <Info size={18} color="#475569" />
             </TouchableOpacity>
           </View>
-        </View>
+        </TouchableOpacity>
       ))}
 
       <ReportsDistrictDetail

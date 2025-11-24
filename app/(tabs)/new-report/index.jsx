@@ -78,6 +78,7 @@ const NewReport = () => {
       <ScrollView
         className="flex-1 px-4 py-4"
         keyboardShouldPersistTaps="handled"
+        automaticallyAdjustKeyboardInsets={true}
       >
         <CategorySelect
           value={form.category}

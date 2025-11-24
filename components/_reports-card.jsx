@@ -2,7 +2,7 @@ import { memo } from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { MapPin } from "lucide-react-native";
 import { STATUS_COLOR, STATUS_LABEL } from "@/constants";
-import { getCategoryLabel } from "@/utils/_category";
+import { getCategoryLabel } from "@/utils";
 
 export const ReportCard = memo(
   ({ report = {}, width = 320, onPress, status = false }) => {

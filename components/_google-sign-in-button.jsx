@@ -16,8 +16,8 @@ export const GoogleSignInButton = ({ onSuccess }) => {
         onSuccess();
       }
     } catch (error) {
-      console.error("cancelou");
-      throw error;
+      console.log("Login com Google não disponível");
+      setLoading(false);
     }
   };
   return (

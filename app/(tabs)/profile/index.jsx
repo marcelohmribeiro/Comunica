@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { View, Text, Image, ScrollView, ActivityIndicator } from "react-native";
+import { useFocusEffect } from "expo-router";
 import {
   Mail,
   CheckCircle2,
@@ -11,6 +12,8 @@ import useAuth from "@/hooks/_useAuth";
 import { sendVerificationEmail, updateUserProfile } from "@/services/_auth";
 import { SignOutButton, ProfileEdit } from "@/components";
 import { Button, Divider } from "@/components/ui";
+import { useVLibras } from "@/contexts/_vlibras-context";
+import { getProfileContent } from "@/utils/_vlibras-content";
 import Toast from "react-native-toast-message";
 
 const Profile = () => {
@@ -20,6 +23,17 @@ const Profile = () => {
   const [editOpen, setEditOpen] = useState(false);
 
   const isVerified = !!user?.emailVerified;
+  const { updateContent } = useVLibras();
+
+  useFocusEffect(
+    useCallback(() => {
+      if (user) {
+        updateContent(
+          getProfileContent(user.displayName, user.email, isVerified)
+        );
+      }
+    }, [updateContent, user, isVerified])
+  );
 
   const handleSendVerification = async () => {
     setSendingEmail(true);

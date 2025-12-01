@@ -11,3 +11,4 @@ export * from "@/components/_reports-graphic";
 export * from "@/components/_profile-edit";
 export * from "@/components/_google-sign-in-button";
 export * from "@/components/_sign-out-button";
+export { default as VLibrasWidget } from "@/components/_vlibras-widget";

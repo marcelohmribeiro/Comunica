@@ -1,5 +1,2 @@
-import { CATEGORIES } from "@/constants";
-
-export const getCategoryLabel = (value) => {
-  return CATEGORIES.find((c) => c.value === value)?.label;
-};
+export * from "./_category-label";
+export * from "./_vlibras-content";

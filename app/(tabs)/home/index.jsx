@@ -8,10 +8,12 @@ import {
   ActivityIndicator,
   RefreshControl,
 } from "react-native";
-import { useRouter } from "expo-router";
+import { useRouter, useFocusEffect } from "expo-router";
 import { ReportCard, ReportMap, ReportDetail } from "@/components";
 import { useReports } from "@/store";
 import { ReportGraphic } from "@/components";
+import { useVLibras } from "@/contexts/_vlibras-context";
+import { getHomeContent } from "@/utils";
 const { width } = Dimensions.get("window");
 
 const Home = () => {
@@ -38,6 +40,13 @@ const Home = () => {
   }, [fetch]);
 
   const recent = useMemo(() => items.slice(0, 5), [items]);
+  const { updateContent } = useVLibras();
+
+  useFocusEffect(
+    useCallback(() => {
+      updateContent(getHomeContent());
+    }, [updateContent])
+  );
 
   const handleOpen = (rep) => {
     setSelected(rep);

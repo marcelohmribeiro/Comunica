@@ -1,10 +1,13 @@
 import { useCallback, useState, useMemo } from "react";
 import { View, Text, ScrollView, TextInput } from "react-native";
+import { useFocusEffect } from "expo-router";
 import { Send } from "lucide-react-native";
 import { Button, ButtonText } from "@/components/ui";
 import { CategorySelect, CameraCapture } from "@/components";
 import { createReport } from "@/services/_reports";
 import { useLoading } from "@/store";
+import { useVLibras } from "@/contexts/_vlibras-context";
+import { getNewReportContent } from "@/utils/_vlibras-content";
 import Toast from "react-native-toast-message";
 
 const DESC_MAX = 150;
@@ -31,6 +34,14 @@ const NewReport = () => {
       !submitting
     );
   }, [form, cameraValue, submitting]);
+
+  const { updateContent } = useVLibras();
+
+  useFocusEffect(
+    useCallback(() => {
+      updateContent(getNewReportContent());
+    }, [updateContent])
+  );
 
   const handleSubmit = useCallback(async () => {
     if (!canSubmit) {

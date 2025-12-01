@@ -3,6 +3,8 @@ import { Slot } from "expo-router";
 import { View, Image } from "react-native";
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import { LoadingProvider } from "@/components/_loading";
+import { VLibrasProvider } from "@/contexts/_vlibras-context";
+import { VLibrasWidget } from "@/components";
 import Toast from "react-native-toast-message";
 import useAuth from "@/hooks/_useAuth";
 
@@ -22,8 +24,11 @@ const RootLayout = () => {
   return (
     <LoadingProvider>
       <GluestackUIProvider mode="light">
-        {user && <Header />}
-        <Slot />
+        <VLibrasProvider>
+          {user && <Header />}
+          <Slot />
+          {user && <VLibrasWidget />}
+        </VLibrasProvider>
       </GluestackUIProvider>
       <Toast />
     </LoadingProvider>

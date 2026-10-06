@@ -29,6 +29,22 @@
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
     },
-    "plugins": ["expo-router", "expo-web-browser"]
+    "plugins": [
+      "expo-router",
+      "expo-web-browser"
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "d99eb9ad-08f6-4894-8115-ffa802b23901"
+      }
+    },
+    "owner": "marcelohmribeiro",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/d99eb9ad-08f6-4894-8115-ffa802b23901"
+    }
   }
 }
